@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useState } from "react";
 
 /**
  * ステータス定義（P5 5項目 + 意志力/体力）
@@ -54,6 +54,8 @@ const RANK_OPTIONS = [
 ];
 
 const STATUS_LABEL = Object.fromEntries(STATUS_ORDER.map((s) => [s.id, s.label]));
+
+const STORAGE_KEY = "persona_todo_v1";
 
 function getRankInfo(statusId, value) {
   const v = Math.max(0, Number(value) || 0);
@@ -266,6 +268,8 @@ export default function Home() {
 
   const [tasks, setTasks] = useState(INITIAL_TASKS);
 
+  const [loaded, setLoaded] = useState(false);
+
   // 解放条件（アンロック）
   const [unlocks, setUnlocks] = useState(INITIAL_UNLOCKS);
 
@@ -277,6 +281,37 @@ export default function Home() {
   // 新規タスク追加（7項目フル）
   const [newTitle, setNewTitle] = useState("");
   const [newEffects, setNewEffects] = useState(() => emptyEffects());
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        setLoaded(true);
+        return;
+      }
+      const data = JSON.parse(raw);
+
+      // 形チェック（最低限）
+      if (data?.stats) setStats(data.stats);
+      if (Array.isArray(data?.tasks)) setTasks(data.tasks);
+
+      setLoaded(true);
+    } catch (e) {
+      console.error("Failed to load:", e);
+      setLoaded(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!loaded) return; // 初回ロードが終わるまで保存しない
+
+    try {
+      const data = { stats, tasks };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } catch (e) {
+      console.error("Failed to save:", e);
+    }
+  }, [stats, tasks, loaded]);
 
   const statusCards = useMemo(() => {
     return STATUS_ORDER.map((s) => {
