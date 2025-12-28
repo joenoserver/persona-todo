@@ -306,7 +306,7 @@ export default function Home() {
     if (!loaded) return; // 初回ロードが終わるまで保存しない
 
     try {
-      const data = { stats, tasks };
+      const data = { stats, tasks, unlocks };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     } catch (e) {
       console.error("Failed to save:", e);
