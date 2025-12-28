@@ -293,7 +293,8 @@ export default function Home() {
 
       // 形チェック（最低限）
       if (data?.stats) setStats(data.stats);
-      if (Array.isArray(data?.unlocks)) setTasks(data.unlocks);
+      if (Array.isArray(data?.tasks)) setTasks(data.tasks);
+      if (Array.isArray(data?.unlocks)) setUnlocks(data.unlocks);
 
       setLoaded(true);
     } catch (e) {
@@ -311,7 +312,7 @@ export default function Home() {
     } catch (e) {
       console.error("Failed to save:", e);
     }
-  }, [stats, tasks, loaded]);
+  }, [stats, tasks, unlocks, loaded]);
 
   const statusCards = useMemo(() => {
     return STATUS_ORDER.map((s) => {
