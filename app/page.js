@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 /**
  * ステータス定義（P5 5項目 + 意志力/体力）
