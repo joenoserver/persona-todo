@@ -293,7 +293,7 @@ export default function Home() {
 
       // 形チェック（最低限）
       if (data?.stats) setStats(data.stats);
-      if (Array.isArray(data?.tasks)) setTasks(data.tasks);
+      if (Array.isArray(data?.unlocks)) setTasks(data.unlocks);
 
       setLoaded(true);
     } catch (e) {
@@ -406,7 +406,7 @@ export default function Home() {
       title,
       effects,
       count: 0,
-      succesCount: 0,
+      successCount: 0,
     };
 
     setTasks((prev) => [task, ...prev]);
